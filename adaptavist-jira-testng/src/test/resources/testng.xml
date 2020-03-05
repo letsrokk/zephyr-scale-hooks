@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Adaptavist TM4J Test Results Listener" verbose="1" >
+
+    <parameter name="tm4jProjectKey" value="AQA"/>
+    
+    <listeners>
+        <listener class-name="com.github.letsrokk.adaptavist.testng.AdaptavistTestResultListerner"/>
+    </listeners>
+    
+    <test name="Export Results for Simple Tests" >
+        <classes>
+            <class name="com.github.letsrokk.adaptavist.tests.SimpleTestsTest" />
+        </classes>
+    </test>
+
+    <test name="Export Results for DataProvider Tests" >
+        <classes>
+            <class name="com.github.letsrokk.adaptavist.tests.DataProviderTestsTest" />
+        </classes>
+    </test>
+
+</suite>
