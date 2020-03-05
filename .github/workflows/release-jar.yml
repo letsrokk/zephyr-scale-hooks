@@ -2,7 +2,7 @@ name: Build & Release JAR
 on:
   push:
     tags:
-      - *
+      - '*'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,4 +23,4 @@ jobs:
       run: ./mvnw -B versions:set -DnewVersion=${{ steps.get_version.outputs.VERSION }} --file pom.xml
     - name: Package JARs
       id: build_maven
-      run: ./mvnw -B package --file pom.xml
+      run: ./mvnw -B package --file pom.xml -DskipTests
