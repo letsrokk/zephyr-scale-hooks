@@ -72,13 +72,20 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
     }
 
     private void initSuiteContainer(String projectKey, String suiteName) {
-        suiteContainer = CustomSuiteContainer.builder()
-                .projectKey(projectKey)
-                .name(suiteName)
-                .build();
+        if (projectKey != null && !projectKey.equals("")) {
+            suiteContainer = CustomSuiteContainer.builder()
+                    .projectKey(projectKey)
+                    .name(suiteName)
+                    .build();
 
-        TestRun testRun = tm4jClient.createTestRun(suiteContainer.getProjectKey(), suiteContainer.getName());
-        suiteContainer.setTestRunKey(testRun.getKey());
+            TestRun testRun = tm4jClient.createTestRun(suiteContainer.getProjectKey(), suiteContainer.getName());
+            suiteContainer.setTestRunKey(testRun.getKey());
+        } else {
+            log.error("TM4J Project Key is not set");
+            suiteContainer = CustomSuiteContainer.builder()
+                    .name(suiteName)
+                    .build();
+        }
     }
 
     @Override
