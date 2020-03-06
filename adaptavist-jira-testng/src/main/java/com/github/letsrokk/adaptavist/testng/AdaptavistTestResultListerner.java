@@ -124,24 +124,7 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
 
     @Override
     public void onTestStart(ITestResult testResult) {
-        Optional<CustomExecutionContainer> executionContainer = getCustomExecutionContainer(testResult);
-
-        if (!executionContainer.isPresent()) {
-            String testCaseKey = calculateTestCaseKey(testResult);
-            String executionSource = calculateExecutionSource(testResult);
-
-            if (testCaseKey != null && !testCaseKey.equals("")) {
-                CustomExecutionContainer newExecutionContainer =
-                        CustomExecutionContainer.builder()
-                                .testCaseKey(testCaseKey)
-                                .source(executionSource)
-                                .result(ExecutionStatus.NOT_EXECUTED)
-                                .startDate(LocalDateTime.now(ZoneOffset.UTC))
-                                .build();
-
-                getCustomTestContainer(testResult).ifPresent(tc -> tc.getExecutions().add(newExecutionContainer));
-            }
-        }
+        createExecutionContainer(testResult);
     }
 
     @Override
@@ -230,7 +213,28 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
         }
     }
 
-    private void updateCustomExecutionStatus(ITestResult testResult, String status) {
+    synchronized private void createExecutionContainer(ITestResult testResult) {
+        Optional<CustomExecutionContainer> executionContainer = getCustomExecutionContainer(testResult);
+
+        if (!executionContainer.isPresent()) {
+            String testCaseKey = calculateTestCaseKey(testResult);
+            String executionSource = calculateExecutionSource(testResult);
+
+            if (testCaseKey != null && !testCaseKey.equals("")) {
+                CustomExecutionContainer newExecutionContainer =
+                        CustomExecutionContainer.builder()
+                                .testCaseKey(testCaseKey)
+                                .source(executionSource)
+                                .result(ExecutionStatus.NOT_EXECUTED)
+                                .startDate(LocalDateTime.now(ZoneOffset.UTC))
+                                .build();
+
+                getCustomTestContainer(testResult).ifPresent(tc -> tc.getExecutions().add(newExecutionContainer));
+            }
+        }
+    }
+
+    synchronized private void updateCustomExecutionStatus(ITestResult testResult, String status) {
         Optional<CustomExecutionContainer> executionContainer = getCustomExecutionContainer(testResult);
 
         executionContainer.ifPresent(e -> {

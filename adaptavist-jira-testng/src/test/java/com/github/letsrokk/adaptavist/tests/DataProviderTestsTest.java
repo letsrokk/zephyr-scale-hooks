@@ -51,4 +51,20 @@ public class DataProviderTestsTest extends TestBase {
         }
     }
 
+    @DataProvider(parallel = true)
+    private Iterator<Object[]> parallelDataProvider() {
+        List<Object[]> cases = new ArrayList<>();
+
+        cases.add(new Object[]{true});
+        cases.add(new Object[]{false});
+
+        return cases.iterator();
+    }
+
+    @TestCase("AQA-T7")
+    @Test(dataProvider = "parallelDataProvider")
+    public void textExecutionWithParallelDataProviderTest(boolean success) {
+        tm4jListener.onTestStart(testResult);
+        tm4jListener.onTestSuccess(testResult);
+    }
 }
