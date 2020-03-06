@@ -96,9 +96,9 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
             String suiteContainerJson = new ObjectMapper()
                     .registerModule(new JavaTimeModule())
                     .writerWithDefaultPrettyPrinter().writeValueAsString(suiteContainer);
-            log.info(suiteContainerJson);
+            log.debug(suiteContainerJson);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.throwing(e);
         }
     }
 
@@ -210,7 +210,10 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
             String source = calculateExecutionSource(testResult);
 
             return testContainer.get().getExecutions().stream()
-                    .filter(e -> e.getTestCaseKey().equals(testCaseKey) & e.getSource().equals(source))
+                    .filter(e -> testCaseKey != null
+                            && !testCaseKey.equals("")
+                            && e.getTestCaseKey().equals(testCaseKey)
+                            && e.getSource().equals(source))
                     .findFirst();
         } else {
             return Optional.empty();

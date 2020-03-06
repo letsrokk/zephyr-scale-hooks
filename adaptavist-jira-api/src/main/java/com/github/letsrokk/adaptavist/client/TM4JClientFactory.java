@@ -48,7 +48,7 @@ public class TM4JClientFactory {
         BasicAuthInterceptor authInterceptor = new BasicAuthInterceptor(this.username, this.password);
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.level(HttpLoggingInterceptor.Level.BASIC);
+        loggingInterceptor.level(HttpLoggingInterceptor.Level.NONE);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(30, TimeUnit.SECONDS)

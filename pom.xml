@@ -129,7 +129,7 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-github</id>
+            <id>bintray-letsrokk-github</id>
             <name>letsrokk-github</name>
             <url>https://api.bintray.com/maven/letsrokk/github/adaptavist-jira-parent/;publish=1;override=1</url>
         </repository>

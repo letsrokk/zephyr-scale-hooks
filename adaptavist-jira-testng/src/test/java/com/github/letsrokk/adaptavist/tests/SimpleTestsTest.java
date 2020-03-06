@@ -7,6 +7,12 @@ import org.testng.internal.TestResult;
 @Test(singleThreaded = true)
 public class SimpleTestsTest extends TestBase {
 
+    @Test
+    public void testWithoutAnnotation() {
+        tm4jListener.onTestStart(testResult);
+        tm4jListener.onTestSuccess(testResult);
+    }
+
     @TestCase("AQA-T2")
     @Test
     public void testExecutionWithPassStatusTest() {
