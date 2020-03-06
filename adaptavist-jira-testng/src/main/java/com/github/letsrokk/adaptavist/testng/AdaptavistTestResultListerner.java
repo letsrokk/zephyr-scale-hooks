@@ -139,7 +139,7 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
 
     @Override
     public void onTestSkipped(ITestResult testResult) {
-        updateCustomExecutionStatus(testResult, ExecutionStatus.NOT_EXECUTED);
+        updateCustomExecutionStatus(testResult, ExecutionStatus.BLOCKED);
     }
 
     @Override
@@ -235,18 +235,20 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
     }
 
     synchronized private void updateCustomExecutionStatus(ITestResult testResult, String status) {
-        Optional<CustomExecutionContainer> executionContainer = getCustomExecutionContainer(testResult);
+        if (!testResult.wasRetried()) {
+            Optional<CustomExecutionContainer> executionContainer = getCustomExecutionContainer(testResult);
 
-        executionContainer.ifPresent(e -> {
-            if (e.getResult() == null
-                    || e.getResult().equals(ExecutionStatus.NOT_EXECUTED)
-                    || status.equals(ExecutionStatus.FAIL)
-            ) {
-                e.setResult(status);
-            }
-            updateExceptions(e, testResult);
-            e.setEndDate(LocalDateTime.now(ZoneOffset.UTC));
-        });
+            executionContainer.ifPresent(e -> {
+                if (e.getResult() == null
+                        || e.getResult().equals(ExecutionStatus.NOT_EXECUTED)
+                        || status.equals(ExecutionStatus.FAIL)
+                ) {
+                    e.setResult(status);
+                }
+                updateExceptions(e, testResult);
+                e.setEndDate(LocalDateTime.now(ZoneOffset.UTC));
+            });
+        }
     }
 
     private void updateExceptions(CustomExecutionContainer execution, ITestResult testResult) {

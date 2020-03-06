@@ -8,7 +8,7 @@ import org.testng.internal.TestResult;
 public class SimpleTestsTest extends TestBase {
 
     @Test
-    public void testWithoutAnnotation() {
+    public void executionWithoutAnnotationTest() {
         tm4jListener.onTestStart(testResult);
         tm4jListener.onTestSuccess(testResult);
     }
@@ -49,4 +49,23 @@ public class SimpleTestsTest extends TestBase {
         testResult.setStatus(TestResult.STARTED);
     }
 
+    @TestCase("AQA-T9")
+    @Test
+    public void executionWithRetryTest() throws ExampleException {
+        tm4jListener.onTestStart(testResult);
+
+        // skip for retry
+        testResult.setThrowable(new ExampleException("Fail for retry!"));
+        testResult.setStatus(TestResult.SKIP);
+        testResult.setWasRetried(true);
+        tm4jListener.onTestSkipped(testResult);
+
+        // restore test result parameters
+        testResult.setThrowable(null);
+        testResult.setStatus(TestResult.STARTED);
+        testResult.setWasRetried(false);
+
+        // retry with success
+        tm4jListener.onTestSuccess(testResult);
+    }
 }
