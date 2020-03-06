@@ -1,4 +1,4 @@
-# adaptavist-hooks [![Download](https://api.bintray.com/packages/letsrokk/github/zapi-hooks/images/download.svg) ](https://bintray.com/letsrokk/github/zapi-hooks/_latestVersion)
+# adaptavist-hooks [ ![Download](https://api.bintray.com/packages/letsrokk/github/adaptavist-jira-parent/images/download.svg) ](https://bintray.com/letsrokk/github/adaptavist-jira-parent/_latestVersion)
 
 Adapter for test execution results exports to Adaptavist Test Management for Jira Server.  
 API documentation: [Test Management for Jira Server API (v1)](https://docs.adaptavist.io/tm4j/server/api/v1/)
