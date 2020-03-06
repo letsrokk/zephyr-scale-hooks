@@ -57,13 +57,11 @@ public class SimpleTestsTest extends TestBase {
         // skip for retry
         testResult.setThrowable(new ExampleException("Fail for retry!"));
         testResult.setStatus(TestResult.SKIP);
-        testResult.setWasRetried(true);
         tm4jListener.onTestSkipped(testResult);
 
         // restore test result parameters
         testResult.setThrowable(null);
         testResult.setStatus(TestResult.STARTED);
-        testResult.setWasRetried(false);
 
         // retry with success
         tm4jListener.onTestSuccess(testResult);

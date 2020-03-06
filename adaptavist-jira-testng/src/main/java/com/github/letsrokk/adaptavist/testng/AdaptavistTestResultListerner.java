@@ -235,20 +235,29 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
     }
 
     synchronized private void updateCustomExecutionStatus(ITestResult testResult, String status) {
-        if (!testResult.wasRetried()) {
-            Optional<CustomExecutionContainer> executionContainer = getCustomExecutionContainer(testResult);
+        Optional<CustomExecutionContainer> executionContainer = getCustomExecutionContainer(testResult);
 
-            executionContainer.ifPresent(e -> {
-                if (e.getResult() == null
-                        || e.getResult().equals(ExecutionStatus.NOT_EXECUTED)
-                        || status.equals(ExecutionStatus.FAIL)
-                ) {
-                    e.setResult(status);
-                }
-                updateExceptions(e, testResult);
-                e.setEndDate(LocalDateTime.now(ZoneOffset.UTC));
-            });
+        executionContainer.ifPresent(e -> {
+            if (isStatusChangeAllowed(e.getResult(), status)) {
+                e.setResult(status);
+            }
+            updateExceptions(e, testResult);
+            e.setEndDate(LocalDateTime.now(ZoneOffset.UTC));
+        });
+    }
+
+    private boolean isStatusChangeAllowed(String currentStatus, String newStatus) {
+        boolean statusChangeAllowed;
+        if (currentStatus == null
+                || currentStatus.equals(ExecutionStatus.NOT_EXECUTED)
+                || currentStatus.equals(ExecutionStatus.BLOCKED)) {
+            statusChangeAllowed = true;
+        } else if (newStatus.equals(ExecutionStatus.FAIL)) {
+            statusChangeAllowed = true;
+        } else {
+            statusChangeAllowed = false;
         }
+        return statusChangeAllowed;
     }
 
     private void updateExceptions(CustomExecutionContainer execution, ITestResult testResult) {
