@@ -1,15 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Adaptavist TM4J Test Results Listener" verbose="1" >
 
-    <parameter name="tm4jProjectKey" value="AQA"/>
-    
-    <listeners>
-        <listener class-name="com.github.letsrokk.adaptavist.testng.AdaptavistTestResultListerner"/>
-    </listeners>
-    
-    <test name="Export Results for Simple Tests" >
+    <test name="Export Results for Simple Tests" parallel="none" >
         <classes>
             <class name="com.github.letsrokk.adaptavist.tests.SimpleTestsTest" />
+            <class name="com.github.letsrokk.adaptavist.tests.RepeatableTestKeyTest" />
         </classes>
     </test>
 

@@ -123,15 +123,17 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
             String testCaseKey = calculateTestCaseKey(testResult);
             String executionSource = calculateExecutionSource(testResult);
 
-            CustomExecutionContainer newExecutionContainer =
-                    CustomExecutionContainer.builder()
-                            .testCaseKey(testCaseKey)
-                            .source(executionSource)
-                            .result(ExecutionStatus.NOT_EXECUTED)
-                            .startDate(LocalDateTime.now(ZoneOffset.UTC))
-                            .build();
+            if (testCaseKey != null && !testCaseKey.equals("")) {
+                CustomExecutionContainer newExecutionContainer =
+                        CustomExecutionContainer.builder()
+                                .testCaseKey(testCaseKey)
+                                .source(executionSource)
+                                .result(ExecutionStatus.NOT_EXECUTED)
+                                .startDate(LocalDateTime.now(ZoneOffset.UTC))
+                                .build();
 
-            getCustomTestContainer(testResult).ifPresent(tc -> tc.getExecutions().add(newExecutionContainer));
+                getCustomTestContainer(testResult).ifPresent(tc -> tc.getExecutions().add(newExecutionContainer));
+            }
         }
     }
 
@@ -212,8 +214,9 @@ public class AdaptavistTestResultListerner implements ISuiteListener, ITestListe
             return testContainer.get().getExecutions().stream()
                     .filter(e -> testCaseKey != null
                             && !testCaseKey.equals("")
-                            && e.getTestCaseKey().equals(testCaseKey)
-                            && e.getSource().equals(source))
+                            && testCaseKey.equals(e.getTestCaseKey())
+                            && source != null
+                            && source.equals(e.getSource()))
                     .findFirst();
         } else {
             return Optional.empty();

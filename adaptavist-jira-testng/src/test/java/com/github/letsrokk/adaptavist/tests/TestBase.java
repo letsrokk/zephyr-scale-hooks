@@ -16,7 +16,7 @@ public class TestBase {
 
     final static protected String TM4J_PROJECT_KEY = "AQA";
     final static protected String TESTNG_PARAMETER_TM4J_PROJECT_KEY = "tm4jProjectKey";
-    protected static AdaptavistTestResultListerner tm4jListener;
+    static protected AdaptavistTestResultListerner tm4jListener;
     static protected ISuite testSuite;
     static protected ITestContext testContext;
     static protected ITestResult testResult;
