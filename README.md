@@ -1,4 +1,4 @@
-# tm4j-hooks [ ![Download](https://api.bintray.com/packages/letsrokk/github/adaptavist-jira-parent/images/download.svg) ](https://bintray.com/letsrokk/github/adaptavist-jira-parent/_latestVersion)
+# tm4j-hooks [ ![Download](https://api.bintray.com/packages/letsrokk/github/tm4j-hooks-parent/images/download.svg) ](https://bintray.com/letsrokk/github/tm4j-hooks-parent/_latestVersion)
 
 Adapter for test execution results exports to Test Management for Jira (TM4J) Server.  
 API documentation: [Test Management for Jira Server API (v1)](https://support.smartbear.com/tm4j-server/api-docs/v1/)
