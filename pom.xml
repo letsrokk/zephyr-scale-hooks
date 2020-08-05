@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.letsrokk</groupId>
-    <artifactId>adaptavist-jira-parent</artifactId>
+    <artifactId>tm4j-hooks-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>adaptavist-jira-api</module>
-        <module>adaptavist-jira-testng</module>
+        <module>tm4j-api</module>
+        <module>tm4j-testng</module>
     </modules>
 
     <properties>
