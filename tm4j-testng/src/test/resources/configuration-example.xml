@@ -1,15 +1,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Adaptavist TM4J Test Suite" verbose="1" >
+<suite name="TM4J Test Suite" verbose="1" >
 
     <parameter name="tm4jProjectKey" value="AQA"/>
     
     <listeners>
-        <listener class-name="com.github.letsrokk.adaptavist.testng.AdaptavistTestResultListerner"/>
+        <listener class-name="com.github.letsrokk.tm4j.testng.TM4JTestResultListerner"/>
     </listeners>
     
     <test name="Example Test" >
         <classes>
-            <class name="com.github.letsrokk.adaptavist.tests.ConfigurationExampleTest" />
+            <class name="com.github.letsrokk.tm4j.tests.ConfigurationExampleTest" />
         </classes>
     </test>
 

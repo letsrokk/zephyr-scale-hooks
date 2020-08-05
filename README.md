@@ -1,7 +1,7 @@
-# adaptavist-hooks [ ![Download](https://api.bintray.com/packages/letsrokk/github/adaptavist-jira-parent/images/download.svg) ](https://bintray.com/letsrokk/github/adaptavist-jira-parent/_latestVersion)
+# tm4j-hooks [ ![Download](https://api.bintray.com/packages/letsrokk/github/adaptavist-jira-parent/images/download.svg) ](https://bintray.com/letsrokk/github/adaptavist-jira-parent/_latestVersion)
 
-Adapter for test execution results exports to Adaptavist Test Management for Jira Server.  
-API documentation: [Test Management for Jira Server API (v1)](https://docs.adaptavist.io/tm4j/server/api/v1/)
+Adapter for test execution results exports to Test Management for Jira (TM4J) Server.  
+API documentation: [Test Management for Jira Server API (v1)](https://support.smartbear.com/tm4j-server/api-docs/v1/)
 
 # TestNG 6.x and 7.x
 
@@ -9,32 +9,32 @@ API documentation: [Test Management for Jira Server API (v1)](https://docs.adapt
 
 ```xml
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Adaptavist TM4J Test Suite" verbose="1" >
+<suite name="TM4J Test Suite" verbose="1" >
 
     <parameter name="tm4jProjectKey" value="AQA"/>
     
     <listeners>
-        <listener class-name="com.github.letsrokk.adaptavist.testng.AdaptavistTestResultListerner"/>
+        <listener class-name="com.github.letsrokk.tm4j.testng.TM4JTestResultListerner"/>
     </listeners>
     
     <test name="Example Test" >
         <classes>
-            <class name="com.github.letsrokk.adaptavist.tests.ConfigurationExampleTest" />
+            <class name="com.github.letsrokk.tm4j.tests.ConfigurationExampleTest" />
         </classes>
     </test>
 
 </suite>
 ```
 
-# Adaptavist Test Case ID annotations for tests
+# TM4J Test Case ID annotations for tests
 
 Test methods should be either annotated by `@TestCase("PROJECT-T1")` or `@TmsLink("PROJECT-T1")` 
 (provided by Allure Framework)
 
 ```java
-package com.github.letsrokk.adaptavist.tests;
+package com.github.letsrokk.tm4j.tests;
 
-import com.github.letsrokk.adaptavist.annotation.TestCase;
+import com.github.letsrokk.tm4j.annotation.TestCase;
 import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)

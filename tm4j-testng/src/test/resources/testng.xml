@@ -1,16 +1,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Adaptavist TM4J Test Results Listener" verbose="1" >
+<suite name="TM4J Test Results Listener" verbose="1" >
 
     <test name="Export Results for Simple Tests" parallel="none" >
         <classes>
-            <class name="com.github.letsrokk.adaptavist.tests.SimpleTestsTest" />
-            <class name="com.github.letsrokk.adaptavist.tests.RepeatableTestKeyTest" />
+            <class name="com.github.letsrokk.tm4j.tests.SimpleTestsTest" />
+            <class name="com.github.letsrokk.tm4j.tests.RepeatableTestKeyTest" />
         </classes>
     </test>
 
     <test name="Export Results for DataProvider Tests" >
         <classes>
-            <class name="com.github.letsrokk.adaptavist.tests.DataProviderTestsTest" />
+            <class name="com.github.letsrokk.tm4j.tests.DataProviderTestsTest" />
         </classes>
     </test>
 
