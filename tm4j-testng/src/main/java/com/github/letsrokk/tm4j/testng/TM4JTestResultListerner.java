@@ -8,7 +8,6 @@ import com.github.letsrokk.tm4j.client.TM4JClient;
 import com.github.letsrokk.tm4j.client.TM4JClientFactory;
 import com.github.letsrokk.tm4j.client.model.Execution;
 import com.github.letsrokk.tm4j.client.model.ExecutionStatus;
-import com.github.letsrokk.tm4j.client.model.TestRun;
 import com.github.letsrokk.tm4j.testng.container.CustomExecutionContainer;
 import com.github.letsrokk.tm4j.testng.container.CustomExecutionException;
 import com.github.letsrokk.tm4j.testng.container.CustomSuiteContainer;
@@ -78,8 +77,11 @@ public class TM4JTestResultListerner implements ISuiteListener, ITestListener {
                     .name(suiteName)
                     .build();
 
-            TestRun testRun = tm4jClient.createTestRun(suiteContainer.getProjectKey(), suiteContainer.getName());
-            suiteContainer.setTestRunKey(testRun.getKey());
+            String testRunKey = tm4jClient.getTestRunByProjectKeyAndName(projectKey, suiteName)
+                    .orElseGet(() -> tm4jClient.createTestRun(suiteContainer.getProjectKey(), suiteContainer.getName()))
+                    .getKey();
+
+            suiteContainer.setTestRunKey(testRunKey);
         } else {
             log.error("TM4J Project Key is not set");
             suiteContainer = CustomSuiteContainer.builder()

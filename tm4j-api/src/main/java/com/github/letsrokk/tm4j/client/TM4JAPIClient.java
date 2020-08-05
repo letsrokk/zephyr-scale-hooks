@@ -11,6 +11,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ interface TM4JAPIClient {
     @Headers("Content-Type: application/json")
     @POST("testrun")
     Call<TestRun> createTestRun(@Body TestRun body);
+
+    @Headers("Content-Type: application/json")
+    @GET("testrun/search")
+    Call<List<TestRun>> searchTestRun(@Query("query") String query);
 
     @Headers("Content-Type: application/json")
     @GET("testrun/{testRunKey}")

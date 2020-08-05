@@ -6,6 +6,8 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Log4j2
 public class TM4JClient {
@@ -25,7 +27,7 @@ public class TM4JClient {
             String testRunKey =
                     apiClient.createTestRun(testRun).execute().body().getKey();
             testRun =
-                    getTestRun(testRunKey);
+                    getTestRunByKey(testRunKey);
             return testRun;
         } catch (IOException e) {
             log.throwing(e);
@@ -33,12 +35,26 @@ public class TM4JClient {
         }
     }
 
-    public TestRun getTestRun(String testRunKey) {
+    public TestRun getTestRunByKey(String testRunKey) {
         try {
             return apiClient.getTestRun(testRunKey).execute().body();
         } catch (IOException e) {
             log.throwing(e);
             return null;
+        }
+    }
+
+    public Optional<TestRun> getTestRunByProjectKeyAndName(String projectKey, String testRunName) {
+        try {
+            String searchByProjectKeyQuery = String.format("projectKey = \"%s\"", projectKey);
+            List<TestRun> testRuns = apiClient.searchTestRun(searchByProjectKeyQuery).execute().body();
+            return Objects.requireNonNull(testRuns).stream()
+                    .filter(t -> t.getProjectKey().equalsIgnoreCase(projectKey)
+                            && t.getName().equalsIgnoreCase(testRunName))
+                    .findFirst();
+        } catch (IOException e) {
+            log.throwing(e);
+            return Optional.empty();
         }
     }
 
