@@ -8,6 +8,7 @@ import com.github.letsrokk.tm4j.client.TM4JClient;
 import com.github.letsrokk.tm4j.client.TM4JClientFactory;
 import com.github.letsrokk.tm4j.client.model.Execution;
 import com.github.letsrokk.tm4j.client.model.ExecutionStatus;
+import com.github.letsrokk.tm4j.client.model.TestRun;
 import com.github.letsrokk.tm4j.testng.container.CustomExecutionContainer;
 import com.github.letsrokk.tm4j.testng.container.CustomExecutionException;
 import com.github.letsrokk.tm4j.testng.container.CustomSuiteContainer;
@@ -77,9 +78,19 @@ public class TM4JTestResultListerner implements ISuiteListener, ITestListener {
                     .name(suiteName)
                     .build();
 
-            String testRunKey = tm4jClient.getTestRunByProjectKeyAndName(projectKey, suiteName)
-                    .orElseGet(() -> tm4jClient.createTestRun(suiteContainer.getProjectKey(), suiteContainer.getName()))
-                    .getKey();
+            log.debug("Searcing project {} for test cycle \"{}\"", projectKey, suiteName);
+
+            Optional<TestRun> testRun = tm4jClient.getTestRunByProjectKeyAndName(projectKey, suiteName);
+            String testRunKey;
+            if (testRun.isPresent()) {
+                log.debug("Test Cycle found: {} {}", testRun.get().getKey(), testRun.get().getName());
+                testRunKey = testRun.get().getKey();
+            } else {
+                log.debug("Test Cycle was not found. Creating new Test Cycle");
+                TestRun newTestRun = tm4jClient.createTestRun(suiteContainer.getProjectKey(), suiteContainer.getName());
+                log.debug("Test Cycle created: {} {}", newTestRun.getKey(), newTestRun.getName());
+                testRunKey = newTestRun.getKey();
+            }
 
             suiteContainer.setTestRunKey(testRunKey);
         } else {
