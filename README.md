@@ -1,7 +1,7 @@
-# tm4j-hooks [ ![Download](https://api.bintray.com/packages/letsrokk/github/tm4j-hooks-parent/images/download.svg) ](https://bintray.com/letsrokk/github/tm4j-hooks-parent/_latestVersion)
+# zephyr-scale-hooks [ ![Download](https://api.bintray.com/packages/letsrokk/github/tm4j-hooks-parent/images/download.svg) ](https://bintray.com/letsrokk/github/tm4j-hooks-parent/_latestVersion)
 
-Adapter for test execution results exports to Test Management for Jira (TM4J) Server.  
-API documentation: [Test Management for Jira Server API (v1)](https://support.smartbear.com/tm4j-server/api-docs/v1/)
+Adapter for test execution results exports to Zephyr Scale for Jira Cloud.  
+API documentation: [Zephyr Scale for Jira Cloud (v2)](https://support.smartbear.com/zephyr-scale-cloud/api-docs/)
 
 # TestNG 6.x and 7.x
 

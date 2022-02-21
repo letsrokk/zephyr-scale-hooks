@@ -13,30 +13,19 @@ import java.util.concurrent.TimeUnit;
 
 public class TM4JClientFactory {
 
-    final private String tm4jPath = "rest/atm/1.0/";
+    final private String baseUrl = "https://api.zephyrscale.smartbear.com/v2";
+    final private String token;
 
-    private String jiraBaseUrl;
-    private String username;
-    private String password;
-
-    private TM4JClientFactory(
-            String jiraBaseUrl, String username, String password
-    ) {
-        this.jiraBaseUrl = jiraBaseUrl;
-        this.username = username;
-        this.password = password;
+    private TM4JClientFactory(String token) {
+        this.token = token;
     }
 
     public static TM4JClientFactory builder() {
-        return new TM4JClientFactory(
-                getEnvProperty("TM4J_JIRA_URL"),
-                getEnvProperty("TM4J_JIRA_USERNAME"),
-                getEnvProperty("TM4J_JIRA_PASSWORD")
-        );
+        return new TM4JClientFactory(getApiToken());
     }
 
-    private static String getEnvProperty(String name) {
-        return System.getProperty(name, System.getenv(name));
+    private static String getApiToken() {
+        return System.getProperty("ZEPHYR_SCALE_API_TOKEN", System.getenv("ZEPHYR_SCALE_API_TOKEN"));
     }
 
     public TM4JClient build() {
@@ -45,7 +34,7 @@ public class TM4JClientFactory {
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        BasicAuthInterceptor authInterceptor = new BasicAuthInterceptor(this.username, this.password);
+        BearerAuthInterceptor authInterceptor = new BearerAuthInterceptor(this.token);
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.level(HttpLoggingInterceptor.Level.NONE);
@@ -56,13 +45,8 @@ public class TM4JClientFactory {
                 .addInterceptor(loggingInterceptor)
                 .build();
 
-        String tm4jBaseUrl =
-                this.jiraBaseUrl.endsWith("/")
-                        ? this.jiraBaseUrl + tm4jPath
-                        : this.jiraBaseUrl + "/" + tm4jPath;
-
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(tm4jBaseUrl)
+                .baseUrl(baseUrl)
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .build();
