@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="TM4J Test Suite" verbose="1" >
 
-    <parameter name="tm4jProjectKey" value="AQA"/>
+    <parameter name="ZEPHYR_SCALE_PROJECT_KEY" value="AQA"/>
     
     <listeners>
         <listener class-name="com.github.letsrokk.tm4j.testng.TM4JTestResultListerner"/>

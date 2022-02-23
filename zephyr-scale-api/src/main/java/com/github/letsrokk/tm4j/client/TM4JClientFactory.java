@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TM4JClientFactory {
 
-    final private String baseUrl = "https://api.zephyrscale.smartbear.com/v2";
+    final private String baseUrl = "https://api.zephyrscale.smartbear.com/v2/";
     final private String token;
 
     private TM4JClientFactory(String token) {
@@ -51,7 +51,7 @@ public class TM4JClientFactory {
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .build();
 
-        TM4JAPIClient apiClient = retrofit.create(TM4JAPIClient.class);
+        ZephyrScaleAPIClient apiClient = retrofit.create(ZephyrScaleAPIClient.class);
 
         return new TM4JClient(apiClient);
     }

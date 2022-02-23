@@ -1,10 +1,15 @@
 package com.github.letsrokk.tm4j.client;
 
-import com.github.letsrokk.tm4j.client.model.Execution;
-import com.github.letsrokk.tm4j.client.model.TestRun;
+import com.github.letsrokk.tm4j.client.request.CreateTestExecutionRequest;
+import com.github.letsrokk.tm4j.client.model.TestCycle;
+import com.github.letsrokk.tm4j.client.request.CreateTestCycleRequest;
+import com.github.letsrokk.tm4j.client.response.GetTestCyclesResponse;
 import lombok.extern.log4j.Log4j2;
+import retrofit2.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,45 +17,60 @@ import java.util.Optional;
 @Log4j2
 public class TM4JClient {
 
-    private TM4JAPIClient apiClient;
+    private ZephyrScaleAPIClient apiClient;
 
-    protected TM4JClient(TM4JAPIClient apiClient) {
+    protected TM4JClient(ZephyrScaleAPIClient apiClient) {
         this.apiClient = apiClient;
     }
 
-    public TestRun createTestRun(String projectKey, String name) {
-        TestRun testRun = TestRun.builder()
+    public List<TestCycle> getTestCycles() throws IOException {
+        Response<GetTestCyclesResponse> response =
+                apiClient.getTestCycles(null, null, null, null).execute();
+        return Objects.requireNonNull(response.body()).getValues();
+    }
+
+    public TestCycle createTestCycle(String projectKey, String name) {
+        CreateTestCycleRequest createTestCycleRequest = CreateTestCycleRequest.builder()
                 .name(name)
                 .projectKey(projectKey)
                 .build();
         try {
-            String testRunKey =
-                    apiClient.createTestRun(testRun).execute().body().getKey();
-            testRun =
-                    getTestRunByKey(testRunKey);
-            return testRun;
+            String testCycleKey =
+                    Objects.requireNonNull(apiClient.createTestCycle(createTestCycleRequest).execute().body()).getKey();
+            return getTestCycleByKey(testCycleKey);
         } catch (IOException e) {
             log.throwing(e);
             return null;
         }
     }
 
-    public TestRun getTestRunByKey(String testRunKey) {
+    public TestCycle getTestCycleByKey(String testCycleKeyOrId) {
         try {
-            return apiClient.getTestRun(testRunKey).execute().body();
+            return apiClient.getTestCycle(testCycleKeyOrId).execute().body();
         } catch (IOException e) {
             log.throwing(e);
             return null;
         }
     }
 
-    public Optional<TestRun> getTestRunByProjectKeyAndName(String projectKey, String testRunName) {
+    public Optional<TestCycle> getTestCycleByProjectKeyAndName(String projectKey, String testRunName) {
         try {
-            String searchByProjectKeyQuery = String.format("projectKey = \"%s\"", projectKey);
-            List<TestRun> testRuns = apiClient.searchTestRun(searchByProjectKeyQuery).execute().body();
-            return Objects.requireNonNull(testRuns).stream()
-                    .filter(t -> t.getProjectKey().equalsIgnoreCase(projectKey)
-                            && t.getName().equalsIgnoreCase(testRunName))
+            List<TestCycle> testCycles = new ArrayList<>();
+            int startAt = 0;
+            int maxResults = 50;
+            boolean isLast = false;
+            while (!isLast) {
+                GetTestCyclesResponse response =
+                        Objects.requireNonNull(apiClient.getTestCycles(projectKey, null, maxResults, startAt).execute().body());
+                testCycles.addAll(Optional.ofNullable(response.getValues()).orElse(Collections.emptyList()));
+                isLast = response.getIsLast();
+                if (!isLast) {
+                    startAt += maxResults;
+                }
+            }
+            return Objects.requireNonNull(testCycles).stream()
+                    .filter(t -> t.getKey().matches("([A-Za-z]+)-R([0-9]+)")
+                        && t.getName().equalsIgnoreCase(testRunName))
                     .findFirst();
         } catch (IOException e) {
             log.throwing(e);
@@ -58,21 +78,9 @@ public class TM4JClient {
         }
     }
 
-    public void postResult(Execution execution) {
+    public void createTestExecution(CreateTestExecutionRequest execution) {
         try {
-            apiClient.postExecution(execution).execute();
-        } catch (IOException e) {
-            log.throwing(e);
-        }
-    }
-
-    public void postResult(TestRun testRun, List<Execution> executions) {
-        postResult(testRun.getKey(), executions);
-    }
-
-    public void postResult(String testRunKey, List<Execution> executions) {
-        try {
-            apiClient.postExecutionsForTestRun(testRunKey, executions).execute();
+            apiClient.createTestExecution(execution).execute();
         } catch (IOException e) {
             log.throwing(e);
         }

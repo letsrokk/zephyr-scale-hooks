@@ -13,14 +13,14 @@ public class SimpleTestsTest extends TestBase {
         tm4jListener.onTestSuccess(testResult);
     }
 
-    @TestCase("AQA-T2")
+    @TestCase("AQA-T2683")
     @Test
     public void testExecutionWithPassStatusTest() {
         tm4jListener.onTestStart(testResult);
         tm4jListener.onTestSuccess(testResult);
     }
 
-    @TestCase("AQA-T3")
+    @TestCase("AQA-T2684")
     @Test
     public void testExecutionWithFailStatusTest() {
         tm4jListener.onTestStart(testResult);
@@ -31,14 +31,14 @@ public class SimpleTestsTest extends TestBase {
         testResult.setStatus(TestResult.STARTED);
     }
 
-    @TestCase("AQA-T6")
+    @TestCase("AQA-T2685")
     @Test
     public void sameTestCaseKeyPassTest() {
         tm4jListener.onTestStart(testResult);
         tm4jListener.onTestSuccess(testResult);
     }
 
-    @TestCase("AQA-T6")
+    @TestCase("AQA-T2685")
     @Test
     public void sameTestCaseKeyFailTest() {
         tm4jListener.onTestStart(testResult);
@@ -49,7 +49,7 @@ public class SimpleTestsTest extends TestBase {
         testResult.setStatus(TestResult.STARTED);
     }
 
-    @TestCase("AQA-T9")
+    @TestCase("AQA-T2686")
     @Test
     public void executionWithRetryTest() throws ExampleException {
         tm4jListener.onTestStart(testResult);

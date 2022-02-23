@@ -15,7 +15,7 @@ import java.util.Collections;
 public class TestBase {
 
     final static protected String TM4J_PROJECT_KEY = "AQA";
-    final static protected String TESTNG_PARAMETER_TM4J_PROJECT_KEY = "tm4jProjectKey";
+    final static protected String TESTNG_PARAMETER_TM4J_PROJECT_KEY = "ZEPHYR_SCALE_PROJECT_KEY";
     static protected TM4JTestResultListerner tm4jListener;
     static protected ISuite testSuite;
     static protected ITestContext testContext;

@@ -22,14 +22,14 @@ public class DataProviderTestsTest extends TestBase {
         return cases.iterator();
     }
 
-    @TestCase("AQA-T4")
+    @TestCase("AQA-T2687")
     @Test(dataProvider = "simpleDataProvider")
     public void testExecutionDataProviderWithSuccessTest(boolean success) {
         tm4jListener.onTestStart(testResult);
         tm4jListener.onTestSuccess(testResult);
     }
 
-    @TestCase("AQA-T5")
+    @TestCase("AQA-T2688")
     @Test(dataProvider = "simpleDataProvider")
     public void testExecutionDataProviderWithFailTest(boolean success) {
         tm4jListener.onTestStart(testResult);
@@ -61,7 +61,7 @@ public class DataProviderTestsTest extends TestBase {
         return cases.iterator();
     }
 
-    @TestCase("AQA-T7")
+    @TestCase("AQA-T2689")
     @Test(dataProvider = "parallelDataProvider")
     public void textExecutionWithParallelDataProviderTest(boolean success) {
         tm4jListener.onTestStart(testResult);

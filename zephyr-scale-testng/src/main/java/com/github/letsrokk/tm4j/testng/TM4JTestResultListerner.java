@@ -6,9 +6,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.letsrokk.tm4j.annotation.TestCase;
 import com.github.letsrokk.tm4j.client.TM4JClient;
 import com.github.letsrokk.tm4j.client.TM4JClientFactory;
-import com.github.letsrokk.tm4j.client.model.Execution;
+import com.github.letsrokk.tm4j.client.request.CreateTestExecutionRequest;
 import com.github.letsrokk.tm4j.client.model.ExecutionStatus;
-import com.github.letsrokk.tm4j.client.model.TestRun;
+import com.github.letsrokk.tm4j.client.model.TestCycle;
 import com.github.letsrokk.tm4j.testng.container.CustomExecutionContainer;
 import com.github.letsrokk.tm4j.testng.container.CustomExecutionException;
 import com.github.letsrokk.tm4j.testng.container.CustomSuiteContainer;
@@ -78,21 +78,21 @@ public class TM4JTestResultListerner implements ISuiteListener, ITestListener {
                     .name(suiteName)
                     .build();
 
-            log.debug("Searcing project {} for test cycle \"{}\"", projectKey, suiteName);
+            log.debug("Searching project {} for test cycle \"{}\"", projectKey, suiteName);
 
-            Optional<TestRun> testRun = tm4jClient.getTestRunByProjectKeyAndName(projectKey, suiteName);
-            String testRunKey;
+            Optional<TestCycle> testRun = tm4jClient.getTestCycleByProjectKeyAndName(projectKey, suiteName);
+            String testCycleKey;
             if (testRun.isPresent()) {
                 log.debug("Test Cycle found: {} {}", testRun.get().getKey(), testRun.get().getName());
-                testRunKey = testRun.get().getKey();
+                testCycleKey = testRun.get().getKey();
             } else {
                 log.debug("Test Cycle was not found. Creating new Test Cycle");
-                TestRun newTestRun = tm4jClient.createTestRun(suiteContainer.getProjectKey(), suiteContainer.getName());
-                log.debug("Test Cycle created: {} {}", newTestRun.getKey(), newTestRun.getName());
-                testRunKey = newTestRun.getKey();
+                TestCycle newTestCycle = tm4jClient.createTestCycle(suiteContainer.getProjectKey(), suiteContainer.getName());
+                log.debug("Test Cycle created: {} {}", newTestCycle.getKey(), newTestCycle.getName());
+                testCycleKey = newTestCycle.getKey();
             }
 
-            suiteContainer.setTestRunKey(testRunKey);
+            suiteContainer.setTestRunKey(testCycleKey);
         } else {
             log.error("TM4J Project Key is not set");
             suiteContainer = CustomSuiteContainer.builder()
@@ -104,9 +104,9 @@ public class TM4JTestResultListerner implements ISuiteListener, ITestListener {
     @Override
     public void onStart(ISuite suite) {
         initTm4jClient();
-        String tm4jProjectKey = suite.getParameter("tm4jProjectKey");
-        String tm4jTestRunName = suite.getName();
-        initSuiteContainer(tm4jProjectKey, tm4jTestRunName);
+        String zephyrProjectKey = suite.getParameter("ZEPHYR_SCALE_PROJECT_KEY");
+        String zephyrTestCycleName = suite.getName();
+        initSuiteContainer(zephyrProjectKey, zephyrTestCycleName);
     }
 
     @Override
@@ -289,18 +289,22 @@ public class TM4JTestResultListerner implements ISuiteListener, ITestListener {
 
     private void postResults(XmlTest xmlTest) {
         if (suiteContainer.getProjectKey() != null) {
+            String projectKey = suiteContainer.getProjectKey();
+            String testCycleKey = suiteContainer.getTestRunKey();
             Optional<CustomTestContainer> testContainer = getCustomTestContainer(xmlTest);
             testContainer.ifPresent(tc -> {
-                List<Execution> executions = tc.getExecutions().stream()
+                List<CreateTestExecutionRequest> executions = tc.getExecutions().stream()
                         .filter(ec -> ec.getTestCaseKey() != null && !ec.getTestCaseKey().equals(""))
                         .map(ec -> {
-                            Execution execution = Execution.builder()
+                            CreateTestExecutionRequest execution = CreateTestExecutionRequest.builder()
+                                    .projectKey(projectKey)
+                                    .testCycleKey(testCycleKey)
                                     .testCaseKey(ec.getTestCaseKey())
                                     .plannedStartDate(ec.getStartDate())
                                     .actualStartDate(ec.getStartDate())
                                     .plannedEndDate(ec.getEndDate())
                                     .actualEndDate(ec.getEndDate())
-                                    .status(ec.getResult())
+                                    .statusName(ec.getResult())
                                     .build();
 
                             long executionTime =
@@ -317,9 +321,10 @@ public class TM4JTestResultListerner implements ISuiteListener, ITestListener {
                             }
                             return execution;
                         }).collect(Collectors.toList());
-                if (!executions.isEmpty()) {
-                    tm4jClient.postResult(suiteContainer.getTestRunKey(), executions);
-                }
+
+                executions.forEach(execution -> {
+                    tm4jClient.createTestExecution(execution);
+                });
             });
         }
     }

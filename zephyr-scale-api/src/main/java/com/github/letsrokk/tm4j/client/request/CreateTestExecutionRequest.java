@@ -1,4 +1,4 @@
-package com.github.letsrokk.tm4j.client.model;
+package com.github.letsrokk.tm4j.client.request;
 
 /**
  * Created by JacksonGenerator on 2/26/20.
@@ -7,6 +7,7 @@ package com.github.letsrokk.tm4j.client.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.letsrokk.tm4j.client.model.TestScriptResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,27 +24,24 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Execution {
+public class CreateTestExecutionRequest {
 
     @JsonProperty("projectKey")
     private String projectKey;
-
     @JsonProperty("testCaseKey")
     private String testCaseKey;
-
-    @JsonProperty("status")
-    private String status;
+    @JsonProperty("testCycleKey")
+    private String testCycleKey;
+    @JsonProperty("statusName")
+    private String statusName;
 
     @JsonProperty("comment")
     private String comment;
 
-    @JsonProperty("id")
-    private Long id;
-
-    @JsonProperty("assignedTo")
-    private String assignedTo;
-    @JsonProperty("executedBy")
-    private String executedBy;
+    @JsonProperty("assignedToId")
+    private String assignedToId;
+    @JsonProperty("executedById")
+    private String executedById;
 
     @JsonProperty("environment")
     private String environment;
@@ -66,9 +64,9 @@ public class Execution {
     private LocalDateTime plannedEndDate;
 
     @JsonProperty("customFields")
-    private HashMap<String, String> customFields;
+    private HashMap<String, Object> customFields;
 
-    @JsonProperty("scriptResults")
-    private List<ScriptResult> scriptResults;
+    @JsonProperty("testScriptResults")
+    private List<TestScriptResult> testScriptResults;
 
 }

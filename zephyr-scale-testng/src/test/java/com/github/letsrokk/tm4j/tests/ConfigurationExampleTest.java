@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 @Test(singleThreaded = true)
 public class ConfigurationExampleTest {
 
-    @TmsLink("AQA-T1")
+    @TmsLink("AQA-T2690")
     @Test
     public void testExecutionWithPassStatusTest() {
        // do nothing

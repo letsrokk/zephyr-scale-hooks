@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="TM4J Test Results Listener" verbose="1" >
+<suite name="Zephyr Scale Test Results Listener" verbose="1" >
 
     <test name="Export Results for Simple Tests" parallel="none" >
         <classes>
