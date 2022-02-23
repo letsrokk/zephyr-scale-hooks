@@ -10,17 +10,17 @@ public class RepeatableTestKeyTest extends TestBase {
     @TestCase("AQA-T2686")
     @Test
     public void sameTestCaseKeyPassTest() {
-        tm4jListener.onTestStart(testResult);
-        tm4jListener.onTestSuccess(testResult);
+        zephyrScaleListener.onTestStart(testResult);
+        zephyrScaleListener.onTestSuccess(testResult);
     }
 
     @TestCase("AQA-T2686")
     @Test
     public void sameTestCaseKeyFailTest() {
-        tm4jListener.onTestStart(testResult);
-        testResult.setThrowable(new ExampleException("TM4J Fail Example"));
+        zephyrScaleListener.onTestStart(testResult);
+        testResult.setThrowable(new ExampleException("Zephyr Scale Fail Example"));
         testResult.setStatus(TestResult.FAILURE);
-        tm4jListener.onTestFailure(testResult);
+        zephyrScaleListener.onTestFailure(testResult);
         testResult.setThrowable(null);
         testResult.setStatus(TestResult.STARTED);
     }

@@ -9,24 +9,24 @@ public class SimpleTestsTest extends TestBase {
 
     @Test
     public void executionWithoutAnnotationTest() {
-        tm4jListener.onTestStart(testResult);
-        tm4jListener.onTestSuccess(testResult);
+        zephyrScaleListener.onTestStart(testResult);
+        zephyrScaleListener.onTestSuccess(testResult);
     }
 
     @TestCase("AQA-T2683")
     @Test
     public void testExecutionWithPassStatusTest() {
-        tm4jListener.onTestStart(testResult);
-        tm4jListener.onTestSuccess(testResult);
+        zephyrScaleListener.onTestStart(testResult);
+        zephyrScaleListener.onTestSuccess(testResult);
     }
 
     @TestCase("AQA-T2684")
     @Test
     public void testExecutionWithFailStatusTest() {
-        tm4jListener.onTestStart(testResult);
-        testResult.setThrowable(new ExampleException("TM4J Fail Example"));
+        zephyrScaleListener.onTestStart(testResult);
+        testResult.setThrowable(new ExampleException("Zephyr Scale Fail Example"));
         testResult.setStatus(TestResult.FAILURE);
-        tm4jListener.onTestFailure(testResult);
+        zephyrScaleListener.onTestFailure(testResult);
         testResult.setThrowable(null);
         testResult.setStatus(TestResult.STARTED);
     }
@@ -34,17 +34,17 @@ public class SimpleTestsTest extends TestBase {
     @TestCase("AQA-T2685")
     @Test
     public void sameTestCaseKeyPassTest() {
-        tm4jListener.onTestStart(testResult);
-        tm4jListener.onTestSuccess(testResult);
+        zephyrScaleListener.onTestStart(testResult);
+        zephyrScaleListener.onTestSuccess(testResult);
     }
 
     @TestCase("AQA-T2685")
     @Test
     public void sameTestCaseKeyFailTest() {
-        tm4jListener.onTestStart(testResult);
-        testResult.setThrowable(new ExampleException("TM4J Fail Example"));
+        zephyrScaleListener.onTestStart(testResult);
+        testResult.setThrowable(new ExampleException("Zephyr Scale Fail Example"));
         testResult.setStatus(TestResult.FAILURE);
-        tm4jListener.onTestFailure(testResult);
+        zephyrScaleListener.onTestFailure(testResult);
         testResult.setThrowable(null);
         testResult.setStatus(TestResult.STARTED);
     }
@@ -52,18 +52,18 @@ public class SimpleTestsTest extends TestBase {
     @TestCase("AQA-T2686")
     @Test
     public void executionWithRetryTest() throws ExampleException {
-        tm4jListener.onTestStart(testResult);
+        zephyrScaleListener.onTestStart(testResult);
 
         // skip for retry
         testResult.setThrowable(new ExampleException("Fail for retry!"));
         testResult.setStatus(TestResult.SKIP);
-        tm4jListener.onTestSkipped(testResult);
+        zephyrScaleListener.onTestSkipped(testResult);
 
         // restore test result parameters
         testResult.setThrowable(null);
         testResult.setStatus(TestResult.STARTED);
 
         // retry with success
-        tm4jListener.onTestSuccess(testResult);
+        zephyrScaleListener.onTestSuccess(testResult);
     }
 }

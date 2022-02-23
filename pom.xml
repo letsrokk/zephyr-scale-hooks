@@ -131,13 +131,5 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-letsrokk-github</id>
-            <name>letsrokk-github</name>
-            <url>https://api.bintray.com/maven/letsrokk/github/tm4j-hooks-parent/;publish=1;override=1</url>
-        </repository>
-    </distributionManagement>
-
+    
 </project>

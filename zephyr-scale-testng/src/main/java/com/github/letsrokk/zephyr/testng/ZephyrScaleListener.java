@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.letsrokk.zephyr.annotation.TestCase;
-import com.github.letsrokk.zephyr.client.TM4JClient;
-import com.github.letsrokk.zephyr.client.TM4JClientFactory;
+import com.github.letsrokk.zephyr.client.ZephyrScaleClient;
+import com.github.letsrokk.zephyr.client.ZephyrScaleClientFactory;
 import com.github.letsrokk.zephyr.client.request.CreateTestExecutionRequest;
 import com.github.letsrokk.zephyr.client.model.ExecutionStatus;
 import com.github.letsrokk.zephyr.client.model.TestCycle;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 @Log4j2
 public class ZephyrScaleListener implements ISuiteListener, ITestListener {
 
-    private static TM4JClient tm4jClient;
+    private static ZephyrScaleClient zephyrScaleClient;
     private static CustomSuiteContainer suiteContainer;
 
     @Getter
@@ -67,8 +67,8 @@ public class ZephyrScaleListener implements ISuiteListener, ITestListener {
         }
     }
 
-    private void initTm4jClient() {
-        tm4jClient = TM4JClientFactory.builder().build();
+    private void initZephyrScaleClient() {
+        zephyrScaleClient = ZephyrScaleClientFactory.builder().build();
     }
 
     private void initSuiteContainer(String projectKey, String suiteName) {
@@ -80,21 +80,21 @@ public class ZephyrScaleListener implements ISuiteListener, ITestListener {
 
             log.debug("Searching project {} for test cycle \"{}\"", projectKey, suiteName);
 
-            Optional<TestCycle> testRun = tm4jClient.getTestCycleByProjectKeyAndName(projectKey, suiteName);
+            Optional<TestCycle> testRun = zephyrScaleClient.getTestCycleByProjectKeyAndName(projectKey, suiteName);
             String testCycleKey;
             if (testRun.isPresent()) {
                 log.debug("Test Cycle found: {} {}", testRun.get().getKey(), testRun.get().getName());
                 testCycleKey = testRun.get().getKey();
             } else {
                 log.debug("Test Cycle was not found. Creating new Test Cycle");
-                TestCycle newTestCycle = tm4jClient.createTestCycle(suiteContainer.getProjectKey(), suiteContainer.getName());
+                TestCycle newTestCycle = zephyrScaleClient.createTestCycle(suiteContainer.getProjectKey(), suiteContainer.getName());
                 log.debug("Test Cycle created: {} {}", newTestCycle.getKey(), newTestCycle.getName());
                 testCycleKey = newTestCycle.getKey();
             }
 
             suiteContainer.setTestRunKey(testCycleKey);
         } else {
-            log.error("TM4J Project Key is not set");
+            log.error("Zephyr Scale Project Key is not set");
             suiteContainer = CustomSuiteContainer.builder()
                     .name(suiteName)
                     .build();
@@ -103,7 +103,7 @@ public class ZephyrScaleListener implements ISuiteListener, ITestListener {
 
     @Override
     public void onStart(ISuite suite) {
-        initTm4jClient();
+        initZephyrScaleClient();
         String zephyrProjectKey = suite.getParameter("ZEPHYR_SCALE_PROJECT_KEY");
         String zephyrTestCycleName = suite.getName();
         initSuiteContainer(zephyrProjectKey, zephyrTestCycleName);
@@ -323,7 +323,7 @@ public class ZephyrScaleListener implements ISuiteListener, ITestListener {
                         }).collect(Collectors.toList());
 
                 executions.forEach(execution -> {
-                    tm4jClient.createTestExecution(execution);
+                    zephyrScaleClient.createTestExecution(execution);
                 });
             });
         }

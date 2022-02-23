@@ -14,9 +14,9 @@ import java.util.Collections;
 
 public class TestBase {
 
-    final static protected String TM4J_PROJECT_KEY = "AQA";
-    final static protected String TESTNG_PARAMETER_TM4J_PROJECT_KEY = "ZEPHYR_SCALE_PROJECT_KEY";
-    static protected ZephyrScaleListener tm4jListener;
+    final static protected String ZEPHYR_SCALE_PROJECT_KEY = "AQA";
+    final static protected String ZEPHYR_SCALE_PROJECT_KEY_PARAMETER = "ZEPHYR_SCALE_PROJECT_KEY";
+    static protected ZephyrScaleListener zephyrScaleListener;
     static protected ISuite testSuite;
     static protected ITestContext testContext;
     static protected ITestResult testResult;
@@ -24,25 +24,25 @@ public class TestBase {
     @BeforeSuite
     public void startSuite(ITestContext iTestContext) {
         testSuite = iTestContext.getSuite();
-        testSuite.getXmlSuite().setParameters(Collections.singletonMap(TESTNG_PARAMETER_TM4J_PROJECT_KEY, TM4J_PROJECT_KEY));
-        tm4jListener = new ZephyrScaleListener();
-        tm4jListener.onStart(testSuite);
+        testSuite.getXmlSuite().setParameters(Collections.singletonMap(ZEPHYR_SCALE_PROJECT_KEY_PARAMETER, ZEPHYR_SCALE_PROJECT_KEY));
+        zephyrScaleListener = new ZephyrScaleListener();
+        zephyrScaleListener.onStart(testSuite);
     }
 
     @AfterSuite
     public  void finishSuite(ITestContext iTestContext) {
-        tm4jListener.onFinish(testSuite);
+        zephyrScaleListener.onFinish(testSuite);
     }
 
     @BeforeTest
     public void startTest(ITestContext iTestContext) {
         testContext = iTestContext;
-        tm4jListener.onStart(testContext);
+        zephyrScaleListener.onStart(testContext);
     }
 
     @AfterTest
     public void finishTest(ITestContext iTestContext) {
-        tm4jListener.onFinish(testContext);
+        zephyrScaleListener.onFinish(testContext);
     }
 
     @BeforeMethod

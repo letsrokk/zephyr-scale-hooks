@@ -15,11 +15,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
-public class TM4JClient {
+public class ZephyrScaleClient {
 
     private ZephyrScaleAPIClient apiClient;
 
-    protected TM4JClient(ZephyrScaleAPIClient apiClient) {
+    protected ZephyrScaleClient(ZephyrScaleAPIClient apiClient) {
         this.apiClient = apiClient;
     }
 

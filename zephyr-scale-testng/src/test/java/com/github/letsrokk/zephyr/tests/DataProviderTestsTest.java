@@ -25,21 +25,21 @@ public class DataProviderTestsTest extends TestBase {
     @TestCase("AQA-T2687")
     @Test(dataProvider = "simpleDataProvider")
     public void testExecutionDataProviderWithSuccessTest(boolean success) {
-        tm4jListener.onTestStart(testResult);
-        tm4jListener.onTestSuccess(testResult);
+        zephyrScaleListener.onTestStart(testResult);
+        zephyrScaleListener.onTestSuccess(testResult);
     }
 
     @TestCase("AQA-T2688")
     @Test(dataProvider = "simpleDataProvider")
     public void testExecutionDataProviderWithFailTest(boolean success) {
-        tm4jListener.onTestStart(testResult);
+        zephyrScaleListener.onTestStart(testResult);
 
         if(success) {
-            tm4jListener.onTestSuccess(testResult);
+            zephyrScaleListener.onTestSuccess(testResult);
         } else {
-            testResult.setThrowable(new ExampleException("TM4J Fail Example"));
+            testResult.setThrowable(new ExampleException("Zephyr Scale Fail Example"));
             testResult.setStatus(TestResult.FAILURE);
-            tm4jListener.onTestFailure(testResult);
+            zephyrScaleListener.onTestFailure(testResult);
             testResult.setThrowable(null);
             testResult.setStatus(TestResult.STARTED);
         }
@@ -64,7 +64,7 @@ public class DataProviderTestsTest extends TestBase {
     @TestCase("AQA-T2689")
     @Test(dataProvider = "parallelDataProvider")
     public void textExecutionWithParallelDataProviderTest(boolean success) {
-        tm4jListener.onTestStart(testResult);
-        tm4jListener.onTestSuccess(testResult);
+        zephyrScaleListener.onTestStart(testResult);
+        zephyrScaleListener.onTestSuccess(testResult);
     }
 }

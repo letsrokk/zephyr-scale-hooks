@@ -11,24 +11,24 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
-public class TM4JClientFactory {
+public class ZephyrScaleClientFactory {
 
     final private String baseUrl = "https://api.zephyrscale.smartbear.com/v2/";
     final private String token;
 
-    private TM4JClientFactory(String token) {
+    private ZephyrScaleClientFactory(String token) {
         this.token = token;
     }
 
-    public static TM4JClientFactory builder() {
-        return new TM4JClientFactory(getApiToken());
+    public static ZephyrScaleClientFactory builder() {
+        return new ZephyrScaleClientFactory(getApiToken());
     }
 
     private static String getApiToken() {
         return System.getProperty("ZEPHYR_SCALE_API_TOKEN", System.getenv("ZEPHYR_SCALE_API_TOKEN"));
     }
 
-    public TM4JClient build() {
+    public ZephyrScaleClient build() {
         ObjectMapper objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
@@ -53,7 +53,7 @@ public class TM4JClientFactory {
 
         ZephyrScaleAPIClient apiClient = retrofit.create(ZephyrScaleAPIClient.class);
 
-        return new TM4JClient(apiClient);
+        return new ZephyrScaleClient(apiClient);
     }
 
 }
