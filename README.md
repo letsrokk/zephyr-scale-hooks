@@ -14,7 +14,7 @@ API documentation: [Zephyr Scale for Jira Cloud (v2)](https://support.smartbear.
     <parameter name="tm4jProjectKey" value="AQA"/>
     
     <listeners>
-        <listener class-name="com.github.letsrokk.tm4j.testng.TM4JTestResultListerner"/>
+        <listener class-name="com.github.letsrokk.tm4j.testng.ZephyrScaleListener"/>
     </listeners>
     
     <test name="Example Test" >
@@ -32,9 +32,9 @@ Test methods should be either annotated by `@TestCase("PROJECT-T1")` or `@TmsLin
 (provided by Allure Framework)
 
 ```java
-package com.github.letsrokk.tm4j.tests;
+package com.github.letsrokk.zephyr.tests;
 
-import com.github.letsrokk.tm4j.annotation.TestCase;
+import com.github.letsrokk.zephyr.annotation.TestCase;
 import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)
@@ -43,7 +43,7 @@ public class ConfigurationExampleTest {
     @TestCase("AQA-T1")
     @Test
     public void testExecutionWithPassStatusTest() {
-       // do nothing
+        // do nothing
     }
 
 }

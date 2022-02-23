@@ -3,14 +3,14 @@
 
     <test name="Export Results for Simple Tests" parallel="none" >
         <classes>
-            <class name="com.github.letsrokk.tm4j.tests.SimpleTestsTest" />
-            <class name="com.github.letsrokk.tm4j.tests.RepeatableTestKeyTest" />
+            <class name="com.github.letsrokk.zephyr.tests.SimpleTestsTest" />
+            <class name="com.github.letsrokk.zephyr.tests.RepeatableTestKeyTest" />
         </classes>
     </test>
 
     <test name="Export Results for DataProvider Tests" >
         <classes>
-            <class name="com.github.letsrokk.tm4j.tests.DataProviderTestsTest" />
+            <class name="com.github.letsrokk.zephyr.tests.DataProviderTestsTest" />
         </classes>
     </test>
 
